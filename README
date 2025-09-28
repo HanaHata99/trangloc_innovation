@@ -53,8 +53,6 @@ Outputs: structured JSON (entities, relations, emotions, proverb_id, gloss, impl
 
 * **Nguồn ASR**: tập thoại đa miền (giáo dục, đời sống, phát thanh), cân bằng vùng miền (Bắc/Trung/Nam), tốc độ nói & tạp âm đa dạng.
 * **Kho tục ngữ/ca dao**: mỗi mục gồm `text`, `variant`, `gloss`, `topic`, `emotion_tag`, `use_context`, `region`, `phonetic_pattern`.
-* **Bản đồ ngữ âm**: quy tắc biến âm theo phương ngữ (ví dụ: *l/n, ch/tr, s/x*), hỗ trợ matching ở tầng âm vị.
-* **Chú ý bản quyền & đạo đức**: chỉ dùng nguồn **mở/có phép**, ghi nhận tác giả sưu tầm, gắn giấy phép tương ứng.
 
 ---
 
@@ -141,13 +139,6 @@ python app/gradio_app.py
 * **Hội thoại cảm xúc**: trợ lý tổng đài/CSKH nhận diện ý tại ngôn ngoại.
 * **Bảo tồn di sản**: số hoá, lập chỉ mục tục ngữ/ca dao, tìm kiếm theo nghĩa biểu trưng.
 
----
-
-## Đạo đức & Quyền riêng tư
-
-* Xin phép dữ liệu, ẩn danh hoá, bỏ thông tin định danh.
-* Tránh thiên lệch vùng miền/giới; cân bằng tập dữ liệu.
-* Cơ chế gỡ bỏ dữ liệu theo yêu cầu.
 
 ---
 
