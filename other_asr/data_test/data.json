@@ -1,0 +1,20 @@
+{
+    "data_tests": [
+        {
+            "audiofile":"test1.mp3",
+            "text":"chiếc xe máy của tôi bị hỏng rồi"},
+        {
+            "audiofile":"test2.mp3",
+            "text":"hôm nay thời tiết thật tuyệt tôi phải đi dạo quanh đà nẵng thôi"},
+        {
+            "audiofile":"test3.mp3",
+            "text":"tôi là một người ăn quả nhớ kẻ trồng cây"},
+        {
+            "audiofile":"test4.mp3",
+            "text":"phần mềm nhận diện giọng nói của bạn có chính xác không"},
+        {
+            "audiofile":"test5.mp3",
+            "text":"trời mưa lớn làm ngập nhiều tuyến đường ở thành phố đà nẵng"
+        }
+    ]
+}

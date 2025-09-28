@@ -1,0 +1,9 @@
+{
+    "title": "Mini Intelligence",
+    "webview": true,
+    "debug": false,
+    "min_rms": 0.02,
+    "figure_limit": 0.35,
+    "width": 1024,
+    "height": 720
+}

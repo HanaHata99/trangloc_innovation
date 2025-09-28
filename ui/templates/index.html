@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Intelligence</title>
+    <link rel="icon" type="image/png"  href="{{ url_for('static', filename='images/icon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-5.3.6-dist/css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='fontawesome-free-6.7.2-web/js/brands.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='fontawesome-free-6.7.2-web/js/solid.min.js') }}"></script>
+</head>
+<body>
+    <div class='container-fluid'>
+        <div id='figure-container'>
+            <iframe id='figure-frame' src="/dash/figure" title="description"></iframe>
+            <div class='d-flex justify-content-center align-items-center'>
+                <div class="spinner-border text-warning"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <form action="/action_page.php">
+                    <div class="mb-3 mt-3">
+                      <label for="camxuc">Cảm xúc</label>
+                      <textarea class="form-control" rows="1" id="camxuc" name="text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-9">
+                <form action="/action_page.php">
+                    <div class="mb-3 mt-3">
+                      <label for="cadaotucngu">Ý nghĩa câu ca dao tục ngữ:</label>
+                      <textarea class="form-control" rows="1" id="cadaotucngu" name="text"></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id='floating-setting'>
+            <button type="button" id='btnPause' class="btn btn-secondary">Tạm dừng</button>
+            <button type="button" id='btnReload' class="btn btn-warning">Tải lại</button>
+            <button type="button" id='btnSetting' class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#settingModal">Cài đặt</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="settingModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Cài đặt hệ thống</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3 mt-3">
+                            <label for="min_rms" class="form-label">Giá trị ngưỡng tối thiểu:</label>
+                            <input type="min_rms" class="form-control" id="min_rms" placeholder="Ngưỡng tối thiểu" name="min_rms">
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="txtReference" class="form-label">Câu gốc so sánh:</label>
+                            <textarea type="txtReference" class="form-control" id="txtReference" placeholder="" name="txtReference" rows="3"></textarea>
+                        </div>
+                        <!--
+                        <div class="mb-3">
+                            <label for="audio_device" class="form-label">Lựa chọn thiết bị thu âm:</label>
+                            <select class="form-select">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        -->
+                      </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" id='btnCompute' class="btn btn-primary">CER</button>
+                    <button type="button" id='btnUpdateSetting' class="btn btn-primary">Lưu cài đặt</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/vanila_ajax.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

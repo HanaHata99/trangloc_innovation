@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding-top: 50px;
+}
+
+h1 {
+    color: #333;
+}
+
+#figure-frame {
+    width: 100%;
+    border: none;
+    overflow-y: hidden;
+}
+
+#figure-container {
+    position: relative;
+    width: 100%;
+}
+
+#figure-container > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(100, 183, 227);
+    border-radius: 8px;
+}
+
+/* #btnSetting {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+} */
+
+#floating-setting {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}

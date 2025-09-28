@@ -1,0 +1,178 @@
+# Enhancing Speech Recognition and Natural Language Processing Efficiency with Vietnamese Proverbs, Cultural Features, and Linguistic Nuances Using Advanced Transformer Models
+
+> **Ngôn ngữ:** 🇻🇳 Vietnamese (kèm English abstract)
+
+---
+
+## Tóm tắt (VN)
+
+Đề tài đề xuất một khung nghiên cứu toàn diện cho **nhận dạng tiếng nói tiếng Việt** và **hiểu ngôn ngữ tự nhiên** bằng cách tích hợp các công nghệ AI mã nguồn mở tiên tiến. Mục tiêu là phát triển một hệ thống mạnh mẽ xử lý đầu vào lời nói tiếng Việt và trích xuất thông tin ngữ nghĩa sâu, có xét tới đặc thù **thanh điệu**, **tục ngữ/ca dao**, và **đa dạng xã hội-ngôn ngữ**. Hệ thống gồm ba thành phần chính: (1) **Whisper** cho chuyển âm ASR; (2) **PhoBERT** cho NER, phân tích cú pháp-ngữ nghĩa; (3) mô-đun **phân loại cảm xúc** và **trích xuất ý nghĩa biểu trưng** để diễn giải biểu đạt văn hoá, đặc biệt là **tục ngữ** và **thơ ca dân gian**. Bằng cách đưa yếu tố tu từ, ẩn dụ, và ngụ ý văn hoá vào dữ liệu huấn luyện/đánh giá, hệ thống hướng tới việc vượt qua hiểu nghĩa đen, nắm bắt **hàm ý** và **sắc thái cảm xúc** tốt hơn.
+
+## Abstract (EN)
+
+This research proposes a comprehensive framework for Vietnamese speech recognition and natural language understanding by integrating cutting-edge open-source AI technologies. The pipeline couples **Whisper** for ASR, **PhoBERT** for token-/sentence-level NLP (e.g., NER, syntactic–semantic parsing), and a downstream **emotion classifier** plus **symbolic meaning extractor** tailored to Vietnamese proverbs and folk poetry. By incorporating tonal characteristics, idiomatic usage, and sociolinguistic diversity into both training and evaluation, we aim to move beyond literal comprehension toward **nuanced semantics** and **implied sentiment**. Potential applications span AI-assisted education, dialog systems, and cultural heritage preservation.
+
+---
+
+## Kiến trúc hệ thống
+
+```
+Audio Input (.wav/.flac)
+        │
+        ▼
+[1] Whisper (ASR)
+   └──> transcript + timestamps + confidences
+        │
+        ▼
+[2] PhoBERT (NLP core)
+   ├── Tokenization (syllable/word-level for Vietnamese)
+   ├── NER (PER/ORG/LOC/MISC + culture-specific entities)
+   ├── POS + Dependency Parsing
+   └── Sentence Embeddings (for similarity/semantic search)
+        │
+        ▼
+[3] Downstream Modules
+   ├── Emotion Classification (Ekman/Valence-Arousal, configurable)
+   ├── Proverbs & Metaphor Detector (pattern + ML)
+   └── Symbolic Meaning Extractor (rule-based + LLM prompting)
+        │
+        ▼
+Outputs: structured JSON (entities, relations, emotions, proverb_id, gloss, implied meaning)
+```
+
+### Điểm mới chính
+
+* **Hợp nhất ngôn liệu văn hoá**: tập tục ngữ/ca dao có gán nhãn ý nghĩa, sắc thái cảm xúc, hoàn cảnh sử dụng.
+* **Bộ dò tục ngữ & ẩn dụ**: kết hợp **biểu thức chính quy/finite-state** với **biến thể chính tả/ngữ âm** và **embedding ngữ nghĩa**.
+* **Giải thích ngữ nghĩa biểu trưng**: ánh xạ sang **khung khái niệm** (e.g., MORALITY, LABOR, FAMILY) và **hào khí/ý tại ngôn ngoại**.
+* **Đánh giá đa tầng**: WER/CER cho ASR, F1 cho NER, UAS/LAS cho parsing, F1 cho proverb detection, CCC/UA/WA cho emotion.
+
+---
+
+## Dataset
+
+* **Nguồn ASR**: tập thoại đa miền (giáo dục, đời sống, phát thanh), cân bằng vùng miền (Bắc/Trung/Nam), tốc độ nói & tạp âm đa dạng.
+* **Kho tục ngữ/ca dao**: mỗi mục gồm `text`, `variant`, `gloss`, `topic`, `emotion_tag`, `use_context`, `region`, `phonetic_pattern`.
+* **Bản đồ ngữ âm**: quy tắc biến âm theo phương ngữ (ví dụ: *l/n, ch/tr, s/x*), hỗ trợ matching ở tầng âm vị.
+* **Chú ý bản quyền & đạo đức**: chỉ dùng nguồn **mở/có phép**, ghi nhận tác giả sưu tầm, gắn giấy phép tương ứng.
+
+---
+
+## Thiết lập môi trường
+
+```bash
+# Python >= 3.10
+conda create -n vn-speech-nlp python=3.10 -y
+conda activate vn-speech-nlp
+
+# Core deps
+pip install torch torchaudio transformers accelerate datasets evaluate
+pip install jiwer underthesea vncorenlp fugashi unidic-lite
+pip install openai-whisper librosa pydub gradio
+# Optional: CUDA-specific torch build per máy
+```
+
+---
+
+## Chạy nhanh (Quickstart)
+
+```bash
+# 1) Chuyển âm audio -> text
+python scripts/asr_transcribe.py \
+  --audio_dir data/asr/sample_audio \
+  --whisper_size medium \
+  --out transcripts.jsonl
+
+# 2) Suy luận NLP (NER + parsing + embeddings)
+python scripts/nlp_infer.py \
+  --input transcripts.jsonl \
+  --phobert_model vinai/phobert-large \
+  --out nlp_outputs.jsonl
+
+# 3) Phát hiện tục ngữ & cảm xúc
+python scripts/culture_infer.py \
+  --input nlp_outputs.jsonl \
+  --proverb_lexicon data/proverbs/train.jsonl \
+  --rules lexicons/phonetic_rules.yaml \
+  --out final_outputs.jsonl
+
+# 4) Giao diện demo
+python app/gradio_app.py
+```
+
+---
+
+## Huấn luyện
+
+### ASR (Whisper fine-tuning, tuỳ chọn)
+
+* Chuẩn hoá âm lượng, cắt lặng, chuẩn hoá tốc độ.
+* Tăng cường dữ liệu: mix tạp âm, reverberation, shift pitch nhỏ.
+* Mẹo: bắt đầu với **Whisper small/medium**, quan sát CER, sau đó nâng cấp.
+
+### NLP Core (PhoBERT)
+
+* Huấn luyện/vi hiệu chỉnh cho **NER** và **POS/Dependency** với tập có gán nhãn.
+* Kết hợp **contrastive learning** bằng cặp câu tục ngữ–diễn giải.
+
+### Mô-đun văn hoá & cảm xúc
+
+* *Emotion:* mô hình phân lớp (BiGRU/Transformer) trên embedding PhoBERT + đặc trưng âm học (nếu có). Loss: CE + focal.
+* *Proverb detector:* kết hợp **biểu thức mẫu** (BM25/regex/fst) và **retriever** dựa trên embedding; rerank bằng cross-encoder.
+* *Symbolic meaning extractor:* rule-based + prompt LLM (tuỳ chọn) với kiểm soát luồng (guardrails) để ra JSON chuẩn.
+
+---
+
+## Đánh giá (Metrics)
+
+* **ASR:** WER/CER, thời gian suy luận (RTF), độ tin cậy.
+* **NER:** Precision/Recall/F1 (micro/macro).
+* **Parsing:** UAS/LAS.
+* **Proverb Detection:** Precision@k, Recall@k, F1, MRR, nDCG.
+* **Emotion:** UA/WA, CCC, F1 theo lớp.
+* **End-to-end:** chất lượng giải thích (Likert 1–5) + khảo sát người dùng.
+
+
+---
+
+## Ứng dụng
+
+* **Giáo dục có trợ lý AI**: chấm diễn đạt nói, gợi ý tục ngữ phù hợp ngữ cảnh.
+* **Hội thoại cảm xúc**: trợ lý tổng đài/CSKH nhận diện ý tại ngôn ngoại.
+* **Bảo tồn di sản**: số hoá, lập chỉ mục tục ngữ/ca dao, tìm kiếm theo nghĩa biểu trưng.
+
+---
+
+## Đạo đức & Quyền riêng tư
+
+* Xin phép dữ liệu, ẩn danh hoá, bỏ thông tin định danh.
+* Tránh thiên lệch vùng miền/giới; cân bằng tập dữ liệu.
+* Cơ chế gỡ bỏ dữ liệu theo yêu cầu.
+
+---
+
+## Hạn chế đã biết
+
+* Sai số với **nhiều tiếng địa phương**/nói nhanh, chồng chéo.
+* **Ẩn dụ đa tầng** khó chuẩn hoá nhãn; cần can thiệp con người.
+* Phụ thuộc chất lượng ghi âm và tính đại diện dữ liệu.
+
+---
+
+## Lộ trình (Roadmap)
+
+* [ ] Mở rộng kho tục ngữ có biến thể âm vị.
+* [ ] Fine-tune Whisper trên miền thoại đời sống.
+* [ ] Thêm **relation extraction** (proverb ↔ context ↔ entity).
+* [ ] Triển khai API/SDK (Python) + Docker.
+* [ ] Benchmark công khai & leaderboard mini.
+
+---
+
+## Liên hệ
+
+* Email: trangkata.des@gmail.com
+
+---
+
+> **Keywords:** Vietnamese Speech Recognition; Natural Language Processing; Whisper; PhoBERT; Emotion Analysis; Cultural Semantics; Proverbs; Folk Poetry.
